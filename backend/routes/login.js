@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 const router = Router();
+const SECRET = "thisismysecretkey";
 
 router.get("/login", async (req, res) => {
     const { username, password } = req.query;
@@ -14,7 +15,6 @@ router.get("/login", async (req, res) => {
         const correct = await bcrypt.compare(password, user.hash);
         if(correct)
         {
-            const SECRET = "thisismysecretkey";
             const token = jwt.sign({name: user.name}, SECRET);
             res.status(200).json({message: "success", token});
         }
@@ -29,11 +29,26 @@ router.post("/signup", async (req, res) => {
     if(existed)
         res.status(400).json({message: "username used"});
     else {
-        const saltRounds = 10;
-        const hash = await bcrypt.hash(password, saltRounds);
+        const hash = await bcrypt.hash(password, 10);
         const newUser = await new User({name: username, hash: hash}).save();
         res.status(200).json({message: "success"});
     }
+})
+
+router.post("/changePassword", async (req, res) => {
+    const token = req.header('Authorization').replace("Bearer ", '');
+    const decoded = jwt.verify(token, SECRET);
+    const { oldPassword, newPassword } = req.body;
+    const user = await User.findOne({name: decoded.name});
+    const correct = await bcrypt.compare(oldPassword, user.hash);
+    if(correct)
+    {
+        user.hash = await bcrypt.hash(newPassword, 10);
+        await user.save();
+        res.status(200).json({message: "success"});
+    }
+    else
+        res.status(400).json({message: "wrong password"});  
 })
 
 export default router;

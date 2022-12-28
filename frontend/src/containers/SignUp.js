@@ -14,7 +14,7 @@ const validate = (values) => {
     }
   
     return errors;
-  };
+};
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -40,35 +40,35 @@ const SignUp = () => {
         <div>
             <h1>WPM</h1>
             <Formik
-            initialValues={{ username: '', password: '', confirmPassword: '' }}
-            validate={validate}
-            onSubmit={onSubmit}
+                initialValues={{ username: '', password: '', confirmPassword: '' }}
+                validate={validate}
+                onSubmit={onSubmit}
             >
-            {props => (
-                <Form>
-                <Field
-                    type="text"
-                    name="username"
-                    placeholder="username"
-                />
-                {props.errors.username ? <span>{props.errors.username}</span> : null}
-                <br/>
-                <Field
-                    type="password"
-                    name="password"
-                    placeholder="password"
-                />
-                {props.errors.password ? <span>{props.errors.password}</span> : null}
-                <br />
-                <Field
-                    type="password"
-                    name="confirmPassword"
-                    placeholder="Confirm Password"
-                />
-                <br />
-                <button type="submit">Sign Up</button>
-                </Form>
-            )}
+                {props => (
+                    <Form>
+                        <Field
+                            type="text"
+                            name="username"
+                            placeholder="username"
+                        />
+                        {props.errors.username ? <span>{props.errors.username}</span> : null}
+                        <br/>
+                        <Field
+                            type="password"
+                            name="password"
+                            placeholder="password"
+                        />
+                        {props.errors.password ? <span>{props.errors.password}</span> : null}
+                        <br />
+                        <Field
+                            type="password"
+                            name="confirmPassword"
+                            placeholder="Confirm Password"
+                        />
+                        <br />
+                        <button type="submit">Sign Up</button>
+                    </Form>
+                )}
             </Formik>
         </div>
     );
