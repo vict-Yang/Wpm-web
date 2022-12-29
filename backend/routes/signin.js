@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const router = Router();
 const SECRET = "thisismysecretkey";
 
-router.get("/login", async (req, res) => {
+router.get("/signin", async (req, res) => {
     const { username, password } = req.query;
     const user = await User.findOne({name: username});
     if(!user)
@@ -16,10 +16,10 @@ router.get("/login", async (req, res) => {
         if(correct)
         {
             const token = jwt.sign({name: user.name}, SECRET);
-            res.status(200).json({message: "success", token});
+            res.status(200).json({message: "Success", token});
         }
         else
-            res.status(400).json({message: "wrong password"});
+            res.status(400).json({message: "Wrong Password"});
     }
 })
 
@@ -27,11 +27,11 @@ router.post("/signup", async (req, res) => {
     const { username, password } = req.body;
     const existed = await User.findOne({name: username});
     if(existed)
-        res.status(400).json({message: "username used"});
+        res.status(400).json({message: "Username Used"});
     else {
         const hash = await bcrypt.hash(password, 10);
         const newUser = await new User({name: username, hash: hash}).save();
-        res.status(200).json({message: "success"});
+        res.status(200).json({message: "Success"});
     }
 })
 
@@ -45,10 +45,10 @@ router.post("/changePassword", async (req, res) => {
     {
         user.hash = await bcrypt.hash(newPassword, 10);
         await user.save();
-        res.status(200).json({message: "success"});
+        res.status(200).json({message: "Success"});
     }
     else
-        res.status(400).json({message: "wrong password"});  
+        res.status(400).json({message: "Wrong Password"});  
 })
 
 export default router;

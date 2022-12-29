@@ -10,10 +10,10 @@ const App = () => (
     <Router>
         <Routes>
             <Route path={"/"} element={
-                <RequireAuth loginPath={"/login"}>
+                <RequireAuth loginPath={"/signin"}>
                     <MainPage />
                 </RequireAuth>} />
-            <Route path={"/login"} element={<SignIn />} />
+            <Route path={"/signin"} element={<SignIn />} />
             <Route path={"/signup"} element={<SignUp />} />
             <Route path={"/profile"} element={<Profile />} />
         </Routes>

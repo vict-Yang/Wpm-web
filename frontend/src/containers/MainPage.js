@@ -6,7 +6,7 @@ const MainPage = () => {
     const navigate = useNavigate();
     const mySignOut = () => {
         signOut();
-        navigate("/login");
+        navigate("/signin");
     }
     
     return (
