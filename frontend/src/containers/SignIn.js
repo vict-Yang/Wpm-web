@@ -1,33 +1,32 @@
 import './App.css';
-import { Formik, Field, Form } from "formik";
+import { Formik, Field, Form, useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useSignIn, useAuthUser } from "react-auth-kit";
-import styled from "styled-components";
 import axios from "../api";
 import { useEffect } from 'react';
+import Container from '@mui/material/Container';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import Grid from '@mui/material/Grid';
+import Link from'@mui/material/Link';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+import * as yup from "yup"
 
-const Container = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`;
+const theme = createTheme();
 
+const darkTheme = createTheme({
+    palette: {
+      mode: 'dark',
+    },
+  });
 
-const validate = (values) => {
-    const errors = {};
-  
-    if (!values.username) {
-      errors.username = 'Required';
-    }
-    if (!values.password) {
-        errors.password = 'Required';
-    }
-  
-    return errors;
-  };
+const validationSchema = yup.object({
+    username: yup.string().required("Username is required."),
+    password: yup.string().min(6, "Password should be of minimum 6 characters.").required("Password is required."),
+});
 
 const SignIn = () => {
     const navigate = useNavigate();
@@ -58,36 +57,68 @@ const SignIn = () => {
         actions.setSubmitting(false);
     }
 
+    const formik = useFormik({
+        initialValues: {
+            username: "",
+            password: "",
+        },
+        onSubmit,
+        validationSchema: validationSchema,
+    })
+
     return (
-        <Container>
-            <h1>WPM</h1>
-            <Formik
-                initialValues={{ username: '', password: '' }}
-                validate={validate}
-                onSubmit={onSubmit}
-            >
-                {props => (
-                    <Form>
-                        <Field
+        <ThemeProvider theme={theme}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                    <Typography component="h1" variant="h4">Sign In</Typography>
+                    <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
+                        <TextField
+                            margin="normal"
+                            fullWidth
                             type="text"
                             name="username"
                             placeholder="username"
+                            label="Username"
+                            value={formik.values.username}
+                            onChange={formik.handleChange}
+                            error={formik.touched.username && Boolean(formik.errors.username)}
+                            helperText={formik.touched.username && formik.errors.username}
+                            autoFocus
                         />
-                        {props.errors.username ? <span>{props.errors.username}</span> : null}
-                        <br/>
-                        <Field
+                        <TextField
+                            margin="normal"
+                            fullWidth
                             type="password"
                             name="password"
                             placeholder="password"
+                            label="Password"
+                            value={formik.values.password}
+                            onChange={formik.handleChange}
+                            error={formik.touched.password && Boolean(formik.errors.password)}
+                            helperText={formik.touched.password && formik.errors.password}
                         />
-                        {props.errors.password ? <span>{props.errors.password}</span> : null}
-                        <br />
-                        <button type="submit">Login</button>
-                        <button onClick={() => navigate("/signup")} style={{color: 'darkblue'}}>Sign Up</button>
-                    </Form>
-                )}
-            </Formik>
-        </Container>
+                        <Button sx={{ mt: 3, mb: 2 }} variant="contained" fullWidth type="submit">
+                            SIGN IN
+                        </Button>
+                        <Grid container>
+                            <Grid item>
+                                <Link href="/signup" variant="body2">
+                                    Sign Up
+                                </Link>
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Box>
+            </Container>
+        </ThemeProvider>
     );
 }
 
