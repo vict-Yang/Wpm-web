@@ -1,14 +1,9 @@
 import { useFormik } from "formik";
 import Modal from '@mui/material/Modal';
-import Snackbar from '@mui/material/Snackbar';
-import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import * as yup from "yup"
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-const theme = createTheme();
 
 const style = {
     position: 'absolute',
@@ -17,9 +12,10 @@ const style = {
     transform: 'translate(-50%, -50%)',
     width: 400,
     height: 400,
-    bgcolor: 'white',
+    bgcolor: '#313336',
     p: 4,
     boxShadow: 8,
+    borderRadius: 2,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -43,7 +39,6 @@ const PsModal = ({open, onClose, changePassword}) => {
     });
 
     return (
-        <ThemeProvider theme={theme}>
             <Modal
                 open={open}
                 onClose={onClose}
@@ -93,7 +88,6 @@ const PsModal = ({open, onClose, changePassword}) => {
                     </Box>
                 </Box>  
             </Modal>
-        </ThemeProvider>
     )
 }
 

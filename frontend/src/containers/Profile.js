@@ -1,14 +1,12 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAuthHeader, useAuthUser } from 'react-auth-kit';
-import { useFormik } from "formik";
-import Modal from '@mui/material/Modal';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import axios from "../api"
 import PsModal from "../components/PsModal";
+import Typography from '@mui/material/Typography';
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -33,19 +31,6 @@ const Profile = () => {
     useEffect(() => {
         getUser(username);
     }, [])
-
-    const validate = (values) => {
-        const errors = {};
-      
-        if (!values.oldPassword) {
-          errors.oldPassword = 'Required';
-        }
-        if (!values.newPassword) {
-            errors.newPassword = 'Required';
-        }
-      
-        return errors;
-    };
 
     const changePassword = async (values, actions) => {
         if(values.newPassword !== values.confirmPassword)
@@ -74,16 +59,16 @@ const Profile = () => {
     
     return (
         <div>
-            {loading? <h1></h1> : !exist? <h1>User Not Found</h1> : 
+            {loading? <></> : !exist? <h1>User Not Found</h1> : 
                 <>
                     <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={() => setSnackbarOpen(false)} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
                         <Alert severity={status} sx={{ width: '100%' }} onClose={() => setSnackbarOpen(false)}>
                             {statusMsg}
                         </Alert>
                     </Snackbar>
-                    <h1>{username}'s Profile</h1>
-                    <button onClick={() => {navigate("/")}}>Main Page</button>
-                    {auth().name === username? <Button variant="contained" onClick={() => setModalOpen(true)}>Change Password</Button> : <></>}
+                    <Typography component="h1" variant="h4" color="textPrimary" >{username}'s Profile</Typography>
+                    <Button sx={{position: "absolute", top: "2%", right: "5%"}} size="large" onClick={() => {navigate("/")}}>Main Page</Button>
+                    {auth().name === username? <Button variant="outlined" onClick={() => setModalOpen(true)}>Change Password</Button> : <></>}
                     <PsModal open={modalOpen} changePassword={changePassword} onClose={() => setModalOpen(false)}/>         
                 </>
             }

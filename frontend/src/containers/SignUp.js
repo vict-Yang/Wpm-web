@@ -10,11 +10,7 @@ import Button from '@mui/material/Button';
 import Link from'@mui/material/Link';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import * as yup from "yup"
-
-const theme = createTheme();
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -26,7 +22,7 @@ const SignUp = () => {
         password: yup.string().min(6, "Password should be of minimum 6 characters.").required("Password is required."),
         confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Does not match with Password")
     });
-    
+
     const onSubmit = async (values, actions) => {
         if(values.password !== values.confirmPassword)
             alert("Password does not match");
@@ -56,14 +52,13 @@ const SignUp = () => {
     })
 
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <Snackbar open={open} autoHideDuration={3000} onClose={() => setOpen(false)} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
                 <Alert severity="error" sx={{ width: '100%' }} onClose={() => setOpen(false)}>
                     {errorMsg}
                 </Alert>
             </Snackbar>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
                 <Box
                     sx={{
                         marginTop: 20,
@@ -72,7 +67,7 @@ const SignUp = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography component="h1" variant="h4">Sign Up</Typography>
+                    <Typography component="h1" variant="h4" color="textPrimary">Sign Up</Typography>
                     <Box component="form" onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
                         <TextField
                             margin="normal"
@@ -114,13 +109,13 @@ const SignUp = () => {
                         <Button sx={{ mt: 3, mb: 2 }} variant="contained" fullWidth type="submit">
                             SIGN UP
                         </Button>
-                        <Link href="/signin" variant="body2">
+                        <Link href="/signin" variant="body1">
                             Sign In
                         </Link>
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
+        </>
     );
 }
 
