@@ -5,7 +5,7 @@ import { useCountDown } from "./hooks/useCountDown";
 import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
-const MaxTime = 30;
+const MaxTime = 60;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 70;
 const calculateCorrectWord = (targetText, charsTyped) => {
@@ -26,7 +26,7 @@ const calculateCorrectWord = (targetText, charsTyped) => {
   return ret;
 };
 const reformatTargetText = (targetText) => {
-  let ret = JSON.parse(JSON.stringify(targetText.replace("\n", " ").split("")));
+  let ret = JSON.parse(JSON.stringify(targetText.replaceAll("\n", " ").split("")));
   let idx = targetText.indexOf(" ");
   let linePos = idx;
   while (idx < targetText.length && idx !== -1) {
@@ -50,7 +50,7 @@ const reformatTargetText = (targetText) => {
     idx = nextSpace;
   }
   // console.log(ret.join(""));
-  return ret.join("").replace("\n", " \n");
+  return ret.join("").replaceAll("\n", " \n");
 };
 const TypingPage = ({ targetText }) => {
   const [charsTyped, setCharTyped] = useState([]);
