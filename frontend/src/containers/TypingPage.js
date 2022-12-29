@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { Box, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import { useKeyPress } from "./hooks/useKeyPress";
+import { useCountDown } from "./hooks/useCountDown";
 import { TypingText } from "../components/TypingText";
+import { Timer } from "../components/Timer";
+const MaxTime = 10;
 const TypingPage = ({ targetText }) => {
   const [charTyped, setCharTyped] = useState([]);
+  const { countDown, startCountDown } = useCountDown(MaxTime);
   useKeyPress((key) => {
     if (key != "Backspace") {
       setCharTyped((prevCharsTyped) => [...prevCharsTyped, key]);
@@ -13,12 +17,17 @@ const TypingPage = ({ targetText }) => {
       );
     }
   });
+  useEffect(() => {
+    if (charTyped.length > 0) {
+      startCountDown();
+    }
+  }, [charTyped]);
   return (
     <>
-      <Box>
-        <Typography>some information</Typography>
-      </Box>
-      <TypingText charsTyped={charTyped} targetText={targetText}/>
+      <Container>
+        <Timer time={MaxTime - countDown} MaxTime={MaxTime} />
+        <TypingText charsTyped={charTyped} targetText={targetText} />
+      </Container>
     </>
   );
 };
