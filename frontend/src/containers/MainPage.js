@@ -1,9 +1,12 @@
-import { useSignOut } from 'react-auth-kit'
+import { useSignOut, useAuthUser } from 'react-auth-kit'
 import { useNavigate } from "react-router-dom"
 
 const MainPage = () => {
     const signOut = useSignOut();
     const navigate = useNavigate();
+    const auth = useAuthUser();
+    const username = auth().name;
+
     const mySignOut = () => {
         signOut();
         navigate("/signin");
@@ -13,7 +16,7 @@ const MainPage = () => {
         <>
             <h1>Main Page</h1>
             <button onClick={mySignOut}>Sign Out</button>
-            <button onClick={() => {navigate("/profile")}}>Profile</button>
+            <button onClick={() => {navigate(`/profile/${username}`)}}>Profile</button>
         </>
     )
 }

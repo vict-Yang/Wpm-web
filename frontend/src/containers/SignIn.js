@@ -8,7 +8,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import Link from'@mui/material/Link';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -111,13 +110,9 @@ const SignIn = () => {
                         <Button sx={{ mt: 3, mb: 2 }} variant="contained" fullWidth type="submit">
                             SIGN IN
                         </Button>
-                        <Grid container>
-                            <Grid item>
-                                <Link href="/signup" variant="body2">
-                                    Sign Up
-                                </Link>
-                            </Grid>
-                        </Grid>
+                        <Link href="/signup" variant="body2">
+                            Sign Up
+                        </Link>
                     </Box>
                 </Box>
             </Container>

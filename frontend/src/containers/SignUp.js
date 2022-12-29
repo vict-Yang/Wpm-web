@@ -7,7 +7,6 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Grid from '@mui/material/Grid';
 import Link from'@mui/material/Link';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
@@ -17,17 +16,17 @@ import * as yup from "yup"
 
 const theme = createTheme();
 
-const validationSchema = yup.object({
-    username: yup.string().required("Username is required."),
-    password: yup.string().min(6, "Password should be of minimum 6 characters.").required("Password is required."),
-    confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Does not match with Password")
-});
-
 const SignUp = () => {
     const navigate = useNavigate();
     const [open, setOpen] = useState(false);
     const [errorMsg, setErrorMsg] = useState("");
 
+    const validationSchema = yup.object({
+        username: yup.string().required("Username is required."),
+        password: yup.string().min(6, "Password should be of minimum 6 characters.").required("Password is required."),
+        confirmPassword: yup.string().oneOf([yup.ref("password"), null], "Does not match with Password")
+    });
+    
     const onSubmit = async (values, actions) => {
         if(values.password !== values.confirmPassword)
             alert("Password does not match");
@@ -115,13 +114,9 @@ const SignUp = () => {
                         <Button sx={{ mt: 3, mb: 2 }} variant="contained" fullWidth type="submit">
                             SIGN UP
                         </Button>
-                        <Grid container>
-                            <Grid item>
-                                <Link href="/signin" variant="body2">
-                                    Sign In
-                                </Link>
-                            </Grid>
-                        </Grid>
+                        <Link href="/signin" variant="body2">
+                            Sign In
+                        </Link>
                     </Box>
                 </Box>
             </Container>
