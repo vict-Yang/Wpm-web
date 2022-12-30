@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Container, Modal, Box, Button } from "@mui/material";
+import { Container, Modal, Box, IconButton, Tooltip } from "@mui/material";
+import { Replay, TextSnippet } from "@mui/icons-material";
 import { useKeyPress } from "./hooks/useKeyPress";
 import { useCountDown } from "./hooks/useCountDown";
 import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
-const MaxTime = 5;
+const MaxTime = 10;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 55;
 const calculateCorrectWord = (targetText, charsTyped) => {
@@ -65,7 +66,8 @@ const getNewLineIdx = (targetText, idx) => {
 };
 const TypingPage = ({ targetText }) => {
   const [charsTyped, setCharTyped] = useState([]);
-  const { countDown, startCountDown, setCountDown ,setStart} = useCountDown(MaxTime);
+  const { countDown, startCountDown, setCountDown, setStart } =
+    useCountDown(MaxTime);
   const [wpmPerSecond, setWpmPerSecond] = useState([]);
   const [cursorLineIdx, setLineIdx] = useState(0);
   useKeyPress((key) => {
@@ -125,19 +127,25 @@ const TypingPage = ({ targetText }) => {
             dataKey={"wpm"}
             data={wpmPerSecond}
           />
-          <Button
-            variant="outlined"
-            sx={{ mr: "5px" }}
-            onClick={() => {
-              setCharTyped([]);
-              setCountDown(MaxTime);
-              setStart(false);
-              setWpmPerSecond([]);
-            }}
-          >
-            Retry
-          </Button>
-          <Button variant="outlined">New text</Button>
+          <Tooltip title="retry">
+            <IconButton
+              variant="outlined"
+              sx={{ mr: "5px", mt: "-15px" }}
+              onClick={() => {
+                setCharTyped([]);
+                setCountDown(MaxTime);
+                setStart(false);
+                setWpmPerSecond([]);
+              }}
+            >
+              <Replay />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="new article">
+            <IconButton variant="outlined" sx={{ mt: "-15px" }}>
+              <TextSnippet />
+            </IconButton>
+          </Tooltip>
         </Box>
       </Modal>
       <Container>

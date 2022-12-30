@@ -3,11 +3,11 @@ import { LineChart, Line, CartesianGrid, XAxis, YAxis, Label , Tooltip} from "re
 // dataKey is wpm, xDataKey is second
 const WpmLineChart = ({ xDataKey, dataKey, data }) => {
   return (
-    <LineChart width={900} height={300} data={data}>
+    <LineChart width={1000} height={400} data={data}>
       <Line type="monotone" dataKey={dataKey} stroke="#8884d8" />
       <CartesianGrid stroke="#ccc" />
       <XAxis dataKey={xDataKey}>
-        <Label value="second" offset={0} position="insideBottom" />
+        <Label value="second" offset={-5} position="insideBottom" />
       </XAxis>
       <YAxis>
         <Label value="wpm" offset={0} angle={-90} position="insideLeft" />
