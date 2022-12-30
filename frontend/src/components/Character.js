@@ -34,7 +34,8 @@ const Character = memo(
       ShowCharacter = IncorrectCharacter;
     }
     return (
-      <ShowCharacter variant="h4" color={"textSecondary"}>
+      <ShowCharacter fontFamily="monospace"
+      variant="h4" color={"textSecondary"}>
         {char}
       </ShowCharacter>
     );

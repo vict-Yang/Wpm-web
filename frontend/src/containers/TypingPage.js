@@ -5,9 +5,9 @@ import { useCountDown } from "./hooks/useCountDown";
 import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
-const MaxTime = 60;
+const MaxTime = 10;
 const SecondToMinute = 1 / 60;
-const MaxCharPerLine = 70;
+const MaxCharPerLine = 55;
 const calculateCorrectWord = (targetText, charsTyped) => {
   let ret = 0,
     idx = 0;
@@ -26,7 +26,9 @@ const calculateCorrectWord = (targetText, charsTyped) => {
   return ret;
 };
 const reformatTargetText = (targetText) => {
-  let ret = JSON.parse(JSON.stringify(targetText.replaceAll("\n", " ").split("")));
+  let ret = JSON.parse(
+    JSON.stringify(targetText.replaceAll("\n", " ").split(""))
+  );
   let idx = targetText.indexOf(" ");
   let linePos = idx;
   while (idx < targetText.length && idx !== -1) {
@@ -52,10 +54,20 @@ const reformatTargetText = (targetText) => {
   // console.log(ret.join(""));
   return ret.join("").replaceAll("\n", " \n");
 };
+const getNewLineIdx = (targetText, idx) => {
+  const formatedText = reformatTargetText(targetText).replaceAll(" \n", "\n");
+  let ret = 0;
+  for (let i in formatedText) {
+    if (i >= idx) break;
+    if (formatedText[i] === "\n") ret++;
+  }
+  return ret;
+};
 const TypingPage = ({ targetText }) => {
   const [charsTyped, setCharTyped] = useState([]);
   const { countDown, startCountDown } = useCountDown(MaxTime);
   const [wpmPerSecond, setWpmPerSecond] = useState([]);
+  const [cursorLineIdx, setLineIdx] = useState(0);
   useKeyPress((key) => {
     if (key != "Backspace") {
       setCharTyped((prevCharsTyped) => [...prevCharsTyped, key]);
@@ -69,6 +81,8 @@ const TypingPage = ({ targetText }) => {
     if (charsTyped.length > 0) {
       startCountDown();
     }
+    const newLineIdx = getNewLineIdx(targetText, charsTyped.length);
+    if (newLineIdx !== cursorLineIdx) setLineIdx(newLineIdx);
   }, [charsTyped]);
   useEffect(() => {
     if (countDown !== MaxTime) {
@@ -82,7 +96,7 @@ const TypingPage = ({ targetText }) => {
         },
       ]);
     }
-    // console.log(targetText);
+    console.log("cursorLineIdx = ", cursorLineIdx);
   }, [countDown]);
   return (
     <>
@@ -91,6 +105,7 @@ const TypingPage = ({ targetText }) => {
         <TypingText
           charsTyped={charsTyped}
           targetText={reformatTargetText(targetText)}
+          cursorLineIdx={cursorLineIdx}
         />
         {countDown === 0 ? (
           <WpmLineChart
