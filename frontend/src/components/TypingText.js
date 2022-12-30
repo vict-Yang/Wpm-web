@@ -28,6 +28,7 @@ const TypingText = ({ charsTyped, targetText, cursorLineIdx }) => {
                   charIdx += 1;
                   return (
                     <Character
+                      id={charIdx}
                       key={charIdx}
                       char={char}
                       charTyped={charsTyped[charIdx]}

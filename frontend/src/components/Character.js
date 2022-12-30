@@ -16,13 +16,12 @@ const CorrectCharacter = styled(Typography)({
 });
 const NextCharacter = styled(Typography)({
   ...charBasicStype,
-  background: "#A8A8A8",
 });
 const NotReachCharacter = styled(Typography)({
   ...charBasicStype,
 });
 const Character = memo(
-  ({ char, isNext, charTyped }) => {
+  ({ char, isNext, charTyped, id }) => {
     let ShowCharacter;
     if (isNext) {
       ShowCharacter = NextCharacter;
@@ -38,6 +37,7 @@ const Character = memo(
         fontFamily="monospace"
         variant="h4"
         color={"textSecondary"}
+        id={id}
       >
         {char}
       </ShowCharacter>

@@ -70,6 +70,7 @@ const TypingPage = ({ targetText }) => {
     useCountDown(MaxTime);
   const [wpmPerSecond, setWpmPerSecond] = useState([]);
   const [cursorLineIdx, setLineIdx] = useState(0);
+  const [cursorPos, setCursorPos] = useState({});
   useKeyPress((key) => {
     if (key != "Backspace") {
       setCharTyped((prevCharsTyped) => [...prevCharsTyped, key]);
@@ -85,6 +86,11 @@ const TypingPage = ({ targetText }) => {
     }
     const newLineIdx = getNewLineIdx(targetText, charsTyped.length);
     if (newLineIdx !== cursorLineIdx) setLineIdx(newLineIdx);
+    const newCursorPos = document
+      .getElementById(charsTyped.length.toString())
+      .getBoundingClientRect();
+    setCursorPos(newCursorPos);
+    console.log("ref", cursorPos);
   }, [charsTyped]);
   useEffect(() => {
     if (countDown !== MaxTime) {
@@ -149,6 +155,18 @@ const TypingPage = ({ targetText }) => {
         </Box>
       </Modal>
       <Container>
+        <Box
+          sx={{
+            left: cursorPos.left,
+            width: "2.4px",
+            height: cursorPos.height,
+            top: cursorPos.top,
+            backgroundColor: "black",
+            position: "absolute",
+            transition: "left 0.1s",
+          }}
+          id="cursor"
+        />
         <Timer time={MaxTime - countDown} MaxTime={MaxTime} />
         <TypingText
           charsTyped={charsTyped}
