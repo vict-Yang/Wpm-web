@@ -6,7 +6,8 @@ import { useCountDown } from "./hooks/useCountDown";
 import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
-const MaxTime = 10;
+import { Cursor } from "../components/Cursor";
+const MaxTime = 99999;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 55;
 const calculateCorrectWord = (targetText, charsTyped) => {
@@ -86,10 +87,8 @@ const TypingPage = ({ targetText }) => {
     }
     const newLineIdx = getNewLineIdx(targetText, charsTyped.length);
     if (newLineIdx !== cursorLineIdx) setLineIdx(newLineIdx);
-    const newCursorPos = document
-      .getElementById(charsTyped.length.toString())
-      .getBoundingClientRect();
-    setCursorPos(newCursorPos);
+    const newCursor = document.getElementById(charsTyped.length.toString());
+      setCursorPos(newCursor.getBoundingClientRect());
     console.log("ref", cursorPos);
   }, [charsTyped]);
   useEffect(() => {
@@ -155,18 +154,7 @@ const TypingPage = ({ targetText }) => {
         </Box>
       </Modal>
       <Container>
-        <Box
-          sx={{
-            left: cursorPos.left,
-            width: "2.4px",
-            height: cursorPos.height,
-            top: cursorPos.top,
-            backgroundColor: "black",
-            position: "absolute",
-            transition: "left 0.1s",
-          }}
-          id="cursor"
-        />
+        <Cursor cursorPos={cursorPos} charId={charsTyped.length} />
         <Timer time={MaxTime - countDown} MaxTime={MaxTime} />
         <TypingText
           charsTyped={charsTyped}
