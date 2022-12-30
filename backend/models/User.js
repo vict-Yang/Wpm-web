@@ -9,7 +9,12 @@ const UserSchema = new Schema({
     hash: {
         type: String,
         required: [true, 'Hash field is required.']
-    }
+    },
+    bestWPM: {
+        type: Number,
+        default: 0,
+    },
+    wpmRecent: [{type: Number}],
 })
 
 const User = mongoose.model('user', UserSchema)

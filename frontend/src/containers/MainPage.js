@@ -25,7 +25,7 @@ const MainPage = () => {
                 <Button size="large" onClick={mySignOut} color="secondary">Sign Out</Button>
             </Grid>
             <Grid item>
-                <Button size="large">Leaderboard</Button>
+                <Button size="large" onClick={() => {navigate("/leaderboard")}}>Leaderboard</Button>
             </Grid>
             <Grid item>
                 <Button size="large" onClick={() => {navigate(`/profile/${username}`)}}>Profile</Button>
