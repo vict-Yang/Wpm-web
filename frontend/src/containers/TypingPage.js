@@ -132,6 +132,7 @@ const TypingPage = ({ targetText }) => {
               setCharTyped([]);
               setCountDown(MaxTime);
               setStart(false);
+              setWpmPerSecond([]);
             }}
           >
             Retry
