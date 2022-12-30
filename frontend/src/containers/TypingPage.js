@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import { Container } from "@mui/material";
+import { Container, Modal, Box, Button } from "@mui/material";
 import { useKeyPress } from "./hooks/useKeyPress";
 import { useCountDown } from "./hooks/useCountDown";
 import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
-const MaxTime = 10;
+const MaxTime = 5;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 55;
 const calculateCorrectWord = (targetText, charsTyped) => {
@@ -65,7 +65,7 @@ const getNewLineIdx = (targetText, idx) => {
 };
 const TypingPage = ({ targetText }) => {
   const [charsTyped, setCharTyped] = useState([]);
-  const { countDown, startCountDown } = useCountDown(MaxTime);
+  const { countDown, startCountDown, setCountDown ,setStart} = useCountDown(MaxTime);
   const [wpmPerSecond, setWpmPerSecond] = useState([]);
   const [cursorLineIdx, setLineIdx] = useState(0);
   useKeyPress((key) => {
@@ -100,6 +100,45 @@ const TypingPage = ({ targetText }) => {
   }, [countDown]);
   return (
     <>
+      <Modal
+        open={countDown === 0}
+        sx={{
+          backdropFilter: "blur(3px)",
+        }}
+      >
+        <Box
+          sx={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            bgcolor: "background.paper",
+            border: "2px solid #000",
+            boxShadow: 24,
+            p: 4,
+            borderRadius: 5,
+            borderWidth: 0,
+          }}
+        >
+          <WpmLineChart
+            xDataKey={"second"}
+            dataKey={"wpm"}
+            data={wpmPerSecond}
+          />
+          <Button
+            variant="outlined"
+            sx={{ mr: "5px" }}
+            onClick={() => {
+              setCharTyped([]);
+              setCountDown(MaxTime);
+              setStart(false);
+            }}
+          >
+            Retry
+          </Button>
+          <Button variant="outlined">New text</Button>
+        </Box>
+      </Modal>
       <Container>
         <Timer time={MaxTime - countDown} MaxTime={MaxTime} />
         <TypingText
@@ -107,15 +146,6 @@ const TypingPage = ({ targetText }) => {
           targetText={reformatTargetText(targetText)}
           cursorLineIdx={cursorLineIdx}
         />
-        {countDown === 0 ? (
-          <WpmLineChart
-            xDataKey={"second"}
-            dataKey={"wpm"}
-            data={wpmPerSecond}
-          />
-        ) : (
-          ""
-        )}
       </Container>
     </>
   );

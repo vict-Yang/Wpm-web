@@ -11,7 +11,9 @@ const useCountDown = (startValue) => {
   const startCountDown = () => setStart(true);
   return {
     countDown,
+    setCountDown,
     startCountDown,
+    setStart
   };
 };
 export { useCountDown };
