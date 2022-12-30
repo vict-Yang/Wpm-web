@@ -30,8 +30,8 @@ const TypingText = ({ charsTyped, targetText, cursorLineIdx }) => {
                     <Character
                       key={charIdx}
                       char={char}
-                      id={charIdx}
-                      charsTyped={charsTyped}
+                      charTyped={charsTyped[charIdx]}
+                      isNext={charIdx === charsTyped.length}
                     />
                   );
                 })}

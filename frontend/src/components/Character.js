@@ -22,36 +22,35 @@ const NotReachCharacter = styled(Typography)({
   ...charBasicStype,
 });
 const Character = memo(
-  ({ char, id, charsTyped }) => {
+  ({ char, isNext, charTyped }) => {
     let ShowCharacter;
-    if (id == charsTyped.length) {
+    if (isNext) {
       ShowCharacter = NextCharacter;
-    } else if (id >= charsTyped.length) {
+    } else if (charTyped === undefined) {
       ShowCharacter = NotReachCharacter;
-    } else if (charsTyped[id] === char) {
+    } else if (charTyped === char) {
       ShowCharacter = CorrectCharacter;
     } else {
       ShowCharacter = IncorrectCharacter;
     }
     return (
-      <ShowCharacter fontFamily="monospace"
-      variant="h4" color={"textSecondary"}>
+      <ShowCharacter
+        fontFamily="monospace"
+        variant="h4"
+        color={"textSecondary"}
+      >
         {char}
       </ShowCharacter>
     );
   },
   (props, nextProps) => {
     if (
-      props.id == nextProps.charsTyped.length - 1 ||
-      props.id == nextProps.charsTyped.length ||
-      props.id == nextProps.charsTyped.length + 1
-    ) {
-      // Return false to re-render
+      props.char !== nextProps.char ||
+      props.isNext !== nextProps.isNext ||
+      props.charTyped !== nextProps.charTyped
+    )
       return false;
-    } else {
-      // Return true to avoid re-render
-      return true;
-    }
+    return true;
   }
 );
 export { Character };
