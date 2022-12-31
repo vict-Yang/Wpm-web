@@ -18,7 +18,7 @@ const TabPanel = ({children, value, index}) => {
         {value === index && (
           <Box sx={{ p: 3 }}>
             {children.length > 0 && children.map((user) => (
-                <Typography color="textPrimary">
+                <Typography component="h1" variant="h4" color="textPrimary" key={user.ranking}>
                     {user.ranking} {user.username} {user.bestWPM}
                 </Typography>
             ))}
@@ -40,7 +40,6 @@ const Leaderboard = () => {
         const response = await axios.get("/leaderboard", {params: {name: auth().name}});
         setTopUsers(response.data.topUsers);
         setSelf(response.data.self);
-        console.log(topUsers)
         setLoading(false);
     }
 
@@ -55,21 +54,26 @@ const Leaderboard = () => {
     return (
         <>
             <Button sx={{position: "absolute", top: "2%", right: "5%"}} size="large" onClick={() => {navigate("/")}}>Main Page</Button>
-            <Container component="main" maxWidth="lg" sx={{pt: 10/*background:"white"*/}}>
-                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <Tabs value={tabValue} onChange={handleTabChange} variant="fullWidth">
-                        <Tab label={<span style={{fontSize: "1.5em"}}>1-10</span>}/>
-                        <Tab label={<span style={{fontSize: "1.5em"}}>11-20</span>}/>
-                        <Tab label={<span style={{fontSize: "1.5em"}}>21-30</span>}/>
-                        <Tab label={<span style={{fontSize: "1.5em"}}>31-40</span>}/>
-                        <Tab label={<span style={{fontSize: "1.5em"}}>41-50</span>}/>
-                    </Tabs>
+            <Container component="main" maxWidth="lg" sx={{pt: 10, background:"", height:"90vh"}}>
+                <Box sx={{borderBottom: 2, borderColor: 'divider', background: "", minHeight: "75%"}}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs value={tabValue} onChange={handleTabChange} variant="fullWidth">
+                            <Tab label={<span style={{fontSize: "1.5em"}}>1-10</span>} disabled={!(topUsers.length > 0)}/>
+                            <Tab label={<span style={{fontSize: "1.5em"}}>11-20</span>} disabled={!(topUsers.length > 10)}/>
+                            <Tab label={<span style={{fontSize: "1.5em"}}>21-30</span>} disabled={!(topUsers.length > 20)}/>
+                            <Tab label={<span style={{fontSize: "1.5em"}}>31-40</span>} disabled={!(topUsers.length > 30)}/>
+                            <Tab label={<span style={{fontSize: "1.5em"}}>41-50</span>} disabled={!(topUsers.length > 40)}/>
+                        </Tabs>
+                    </Box>
+                    <TabPanel value={tabValue} index={0} children={topUsers.slice(0, Math.min(10, topUsers.length))} />
+                    <TabPanel value={tabValue} index={1} children={topUsers.slice(Math.min(10, topUsers.length), Math.min(20, topUsers.length))} />
+                    <TabPanel value={tabValue} index={2} children={topUsers.slice(Math.min(20, topUsers.length), Math.min(30, topUsers.length))} />
+                    <TabPanel value={tabValue} index={3} children={topUsers.slice(Math.min(30, topUsers.length), Math.min(40, topUsers.length))} />
+                    <TabPanel value={tabValue} index={4} children={topUsers.slice(Math.min(40, topUsers.length), Math.min(50, topUsers.length))} />
                 </Box>
-                <TabPanel value={tabValue} index={0} children={topUsers.slice(0, Math.min(10, topUsers.length))} />
-                <TabPanel value={tabValue} index={1} children={topUsers.slice(Math.min(10, topUsers.length), Math.min(20, topUsers.length))} />
-                <TabPanel value={tabValue} index={2} children={topUsers.slice(Math.min(20, topUsers.length), Math.min(30, topUsers.length))} />
-                <TabPanel value={tabValue} index={3} children={topUsers.slice(Math.min(30, topUsers.length), Math.min(40, topUsers.length))} />
-                <TabPanel value={tabValue} index={4} children={topUsers.slice(Math.min(40, topUsers.length), Math.min(50, topUsers.length))} />
+                <Typography component="h1" variant="h4" color="textPrimary" sx={{pt: 3}}>
+                    {self.ranking} {self.username} {self.bestWPM}
+                </Typography>
                 {/* <Box sx={{paddingTop: 20}}>
                     {loading? <h1>Hi</h1> : topUsers !== []? topUsers.map((user) => 
                         <Typography component="h1" variant="h4" color="textPrimary" key={user.ranking}>
