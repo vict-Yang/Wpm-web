@@ -14,7 +14,7 @@ const UserSchema = new Schema({
         type: Number,
         default: 0,
     },
-    wpmRecent: [{type: Number}],
+    recentWPM: [{type: Number}],
 })
 
 const User = mongoose.model('user', UserSchema)
