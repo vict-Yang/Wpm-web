@@ -7,7 +7,7 @@ import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
 import { Cursor } from "../components/Cursor";
-const MaxTime = 999999;
+const MaxTime = 10;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 55;
 const calculateCorrectWord = (targetText, charsTyped) => {
@@ -63,18 +63,28 @@ const TypingPage = ({ targetText }) => {
   const [wpmPerSecond, setWpmPerSecond] = useState([]);
   const [cursorLineIdx, setLineIdx] = useState(0);
   const [cursorPos, setCursorPos] = useState({});
-  const cursorRef = useCallback((cursor) => {
-    console.log("ref", cursor);
-    if (cursor !== null) {
-      setCursorPos((preCursorPos) => {
-        let nextCursorPos = JSON.parse(
-          JSON.stringify(cursor.getBoundingClientRect())
-        );
-        if (cursorLineIdx !== 0) nextCursorPos.top = preCursorPos.top;
-        return nextCursorPos;
-      });
-    }
-  }, []);
+  const cursorRef = useCallback(
+    (cursor) => {
+      console.log("ref", cursor);
+      if (cursor !== null) {
+        setCursorPos((preCursorPos) => {
+          let nextCursorPos = JSON.parse(
+            JSON.stringify(cursor.getBoundingClientRect())
+          );
+          console.log("cursorLineIdx in useCallback", cursorLineIdx);
+          if (
+            cursorLineIdx !== 0 &&
+            !(cursorLineIdx === 1 && nextCursorPos.top < preCursorPos.top)
+          ) {
+            console.log("not at first line");
+            nextCursorPos.top = preCursorPos.top;
+          }
+          return nextCursorPos;
+        });
+      }
+    },
+    [cursorLineIdx]
+  );
   useEffect(() => {
     console.log("ref", cursorRef.current);
   }, [cursorRef.current]);
@@ -142,6 +152,7 @@ const TypingPage = ({ targetText }) => {
               onClick={() => {
                 setCharTyped([]);
                 setCountDown(MaxTime);
+                setLineIdx(0);
                 setStart(false);
                 setWpmPerSecond([]);
               }}

@@ -13,18 +13,23 @@ const blinkAnimation = keyframes`
     opacity: 1;
   }
 `;
-const Cursor = ({ cursorPos , charId}) => {
+const Cursor = ({ cursorPos, charId }) => {
+  const cursorStyle = {
+    left: cursorPos.left,
+    width: "2.4px",
+    height: cursorPos.height,
+    top: cursorPos.top,
+    backgroundColor: "black",
+    position: "absolute",
+    transition: "left 0.1s",
+  };
+  if(charId === 0) {
+    cursorStyle.animation =  `${blinkAnimation} 1s infinite ease`
+  }
   return (
     <Box
       sx={{
-        left: cursorPos.left,
-        width: "2.4px",
-        height: cursorPos.height,
-        top: cursorPos.top,
-        backgroundColor: "black",
-        position: "absolute",
-        transition: "left 0.1s",
-        animation: `${blinkAnimation} ${charId ===0 ? 1 : 0}s infinite ease`,
+        ...cursorStyle
       }}
       id="cursor"
     />
