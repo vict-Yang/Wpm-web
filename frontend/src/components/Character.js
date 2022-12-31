@@ -21,7 +21,7 @@ const NotReachCharacter = styled(Typography)({
   ...charBasicStype,
 });
 const Character = memo(
-  ({ char, isNext, charTyped, id }) => {
+  ({ char, isNext, charTyped, id, cursorRef }) => {
     let ShowCharacter;
     if (isNext) {
       ShowCharacter = NextCharacter;
@@ -34,6 +34,7 @@ const Character = memo(
     }
     return (
       <ShowCharacter
+        ref={isNext ? cursorRef : null}
         fontFamily="monospace"
         variant="h4"
         color={"textSecondary"}

@@ -1,13 +1,12 @@
 import { Character } from "./Character";
-import { Box, Fade, Collapse, Grow } from "@mui/material";
-import { TransitionGroup } from "react-transition-group";
+import { Box, Fade, Collapse } from "@mui/material";
 const isVisible = (lineIdx, cursorLineIdx) => {
   if (cursorLineIdx === 0) {
     return lineIdx - cursorLineIdx <= 2;
   }
   return Math.abs(lineIdx - cursorLineIdx) <= 1;
 };
-const TypingText = ({ charsTyped, targetText, cursorLineIdx }) => {
+const TypingText = ({ charsTyped, targetText, cursorLineIdx , cursorRef}) => {
   let charIdx = -1;
   return (
     <>
@@ -33,6 +32,7 @@ const TypingText = ({ charsTyped, targetText, cursorLineIdx }) => {
                       char={char}
                       charTyped={charsTyped[charIdx]}
                       isNext={charIdx === charsTyped.length}
+                      cursorRef={cursorRef}
                     />
                   );
                 })}

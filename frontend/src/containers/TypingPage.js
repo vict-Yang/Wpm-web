@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef, useCallback } from "react";
 import { Container, Modal, Box, IconButton, Tooltip } from "@mui/material";
 import { Replay, TextSnippet } from "@mui/icons-material";
 import { useKeyPress } from "./hooks/useKeyPress";
@@ -7,7 +7,7 @@ import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
 import { Cursor } from "../components/Cursor";
-const MaxTime = 99999;
+const MaxTime = 999999;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 55;
 const calculateCorrectWord = (targetText, charsTyped) => {
@@ -35,14 +35,6 @@ const reformatTargetText = (targetText) => {
   let linePos = idx;
   while (idx < targetText.length && idx !== -1) {
     const nextSpace = targetText.indexOf(" ", idx + 1);
-    // console.log(
-    //   "idx = ",
-    //   idx,
-    //   "linePos = ",
-    //   linePos,
-    //   "nextSpace = ",
-    //   nextSpace
-    // );
     if (nextSpace === -1) break;
     if (linePos + (nextSpace - idx) - 1 >= MaxCharPerLine) {
       // console.log("replace");
@@ -53,7 +45,6 @@ const reformatTargetText = (targetText) => {
     }
     idx = nextSpace;
   }
-  // console.log(ret.join(""));
   return ret.join("").replaceAll("\n", " \n");
 };
 const getNewLineIdx = (targetText, idx) => {
@@ -72,6 +63,21 @@ const TypingPage = ({ targetText }) => {
   const [wpmPerSecond, setWpmPerSecond] = useState([]);
   const [cursorLineIdx, setLineIdx] = useState(0);
   const [cursorPos, setCursorPos] = useState({});
+  const cursorRef = useCallback((cursor) => {
+    console.log("ref", cursor);
+    if (cursor !== null) {
+      setCursorPos((preCursorPos) => {
+        let nextCursorPos = JSON.parse(
+          JSON.stringify(cursor.getBoundingClientRect())
+        );
+        if (cursorLineIdx !== 0) nextCursorPos.top = preCursorPos.top;
+        return nextCursorPos;
+      });
+    }
+  }, []);
+  useEffect(() => {
+    console.log("ref", cursorRef.current);
+  }, [cursorRef.current]);
   useKeyPress((key) => {
     if (key != "Backspace") {
       setCharTyped((prevCharsTyped) => [...prevCharsTyped, key]);
@@ -87,9 +93,6 @@ const TypingPage = ({ targetText }) => {
     }
     const newLineIdx = getNewLineIdx(targetText, charsTyped.length);
     if (newLineIdx !== cursorLineIdx) setLineIdx(newLineIdx);
-    const newCursor = document.getElementById(charsTyped.length.toString());
-      setCursorPos(newCursor.getBoundingClientRect());
-    console.log("ref", cursorPos);
   }, [charsTyped]);
   useEffect(() => {
     if (countDown !== MaxTime) {
@@ -160,6 +163,7 @@ const TypingPage = ({ targetText }) => {
           charsTyped={charsTyped}
           targetText={reformatTargetText(targetText)}
           cursorLineIdx={cursorLineIdx}
+          cursorRef={cursorRef}
         />
       </Container>
     </>
