@@ -8,8 +8,10 @@ import { useNavigate } from "react-router-dom"
 import Button from '@mui/material/Button';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Grid from '@mui/material/Grid';
 
 const TabPanel = ({children, value, index}) => {
+    const navigate = useNavigate();
     return (
       <div
         role="tabpanel"
@@ -18,9 +20,23 @@ const TabPanel = ({children, value, index}) => {
         {value === index && (
           <Box sx={{ p: 3 }}>
             {children.length > 0 && children.map((user) => (
-                <Typography component="h1" variant="h4" color="textPrimary" key={user.ranking}>
-                    {user.ranking} {user.username} {user.bestWPM}
-                </Typography>
+                <Grid container key={user.ranking} spacing={1} sx={{margin: "1px", "&:hover": {background: "#292929"}, cursor:"pointer"}} onClick={() => navigate(`/profile/${user.username}`)}>
+                    <Grid item xs={1}>
+                        <Typography component="h1" variant="h4" color="textPrimary">
+                            {user.ranking}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={10}>
+                        <Typography component="h1" variant="h4" color="textPrimary">
+                            {user.username}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Typography component="h1" variant="h4" color="textPrimary" align="center">
+                            {user.bestWPM}
+                        </Typography>
+                    </Grid>
+                </Grid>
             ))}
           </Box>
         )}
@@ -71,9 +87,23 @@ const Leaderboard = () => {
                     <TabPanel value={tabValue} index={3} children={topUsers.slice(Math.min(30, topUsers.length), Math.min(40, topUsers.length))} />
                     <TabPanel value={tabValue} index={4} children={topUsers.slice(Math.min(40, topUsers.length), Math.min(50, topUsers.length))} />
                 </Box>
-                <Typography component="h1" variant="h4" color="textPrimary" sx={{pt: 3}}>
-                    {self.ranking} {self.username} {self.bestWPM}
-                </Typography>
+                <Grid container spacing={1} sx={{marginTop: 5, "&:hover": {background: "#292929"}, cursor:"pointer"}} onClick={() => navigate(`/profile/${self.username}`)}>
+                <Grid item xs={1}>
+                        <Typography component="h1" variant="h4" color="textPrimary">
+                            {self.ranking}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={10}>
+                        <Typography component="h1" variant="h4" color="textPrimary">
+                            {self.username}
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={1}>
+                        <Typography component="h1" variant="h4" color="textPrimary" align="center">
+                            {self.bestWPM}
+                        </Typography>
+                    </Grid>
+                </Grid>
                 {/* <Box sx={{paddingTop: 20}}>
                     {loading? <h1>Hi</h1> : topUsers !== []? topUsers.map((user) => 
                         <Typography component="h1" variant="h4" color="textPrimary" key={user.ranking}>
