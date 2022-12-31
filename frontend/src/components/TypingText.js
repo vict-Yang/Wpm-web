@@ -22,7 +22,12 @@ const TypingText = ({ charsTyped, targetText, cursorLineIdx , cursorRef}) => {
               in={isVisible(lIdx, cursorLineIdx)}
               timeout={{ enter: 500, exit: 200 }}
             >
-              <Box>
+              <Box
+          sx={{
+            mt: 2,
+            mb: 2,
+          }}
+              >
                 {line.split("").map((char) => {
                   charIdx += 1;
                   return (

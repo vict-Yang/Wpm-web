@@ -11,10 +11,15 @@ const MaxTime = 10;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 55;
 const calculateCorrectWord = (targetText, charsTyped) => {
-  let ret = 0,
+  let wpm = 0,
+    raw = 0,
     idx = 0;
   let targetTextWordArray = targetText.split(/[\n\s]+/);
-  targetTextWordArray.forEach((word) => {
+  targetTextWordArray.every((word) => {
+    if (idx >= charsTyped.length) {
+      return false;
+    }
+    raw++;
     let same = true;
     word.split("").forEach((char) => {
       if (char !== charsTyped[idx]) {
@@ -22,10 +27,12 @@ const calculateCorrectWord = (targetText, charsTyped) => {
       }
       idx++;
     });
-    if (same) ret++;
+    if (same) wpm++;
+    if (charsTyped[idx] === undefined) raw--;
     idx++;
+    return true;
   });
-  return ret;
+  return { wpm, raw };
 };
 const reformatTargetText = (targetText) => {
   let ret = JSON.parse(
@@ -106,13 +113,16 @@ const TypingPage = ({ targetText }) => {
   }, [charsTyped]);
   useEffect(() => {
     if (countDown !== MaxTime) {
-      const wordCnt = calculateCorrectWord(targetText, charsTyped.join(""));
-      console.log("wordCnt = ", wordCnt);
+      const { wpm, raw } = calculateCorrectWord(
+        targetText,
+        charsTyped.join("")
+      );
       setWpmPerSecond((pre) => [
         ...pre,
         {
           second: MaxTime - countDown,
-          wpm: wordCnt / ((MaxTime - countDown) * SecondToMinute),
+          wpm: (wpm / ((MaxTime - countDown) * SecondToMinute)).toFixed(2),
+          raw: (raw / ((MaxTime - countDown) * SecondToMinute)).toFixed(2),
         },
       ]);
     }
