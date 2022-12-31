@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Container, Modal, Box, IconButton, Tooltip } from "@mui/material";
-import { Replay, TextSnippet } from "@mui/icons-material";
+import { Replay, TextSnippet, Save } from "@mui/icons-material";
 import { useKeyPress } from "./hooks/useKeyPress";
 import { useCountDown } from "./hooks/useCountDown";
 import { TypingText } from "../components/TypingText";
@@ -163,6 +163,11 @@ const TypingPage = ({ targetText }) => {
           <Tooltip title="new article">
             <IconButton variant="outlined" sx={{ mt: "-15px" }}>
               <TextSnippet />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="save">
+            <IconButton variant="outlined" sx={{ mt: "-15px" }}>
+              <Save />
             </IconButton>
           </Tooltip>
         </Box>
