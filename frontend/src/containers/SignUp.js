@@ -61,7 +61,7 @@ const SignUp = () => {
             <Container component="main" maxWidth="xs">
                 <Box
                     sx={{
-                        marginTop: 20,
+                        paddingTop: 20,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',

@@ -7,6 +7,10 @@ import Button from '@mui/material/Button';
 import axios from "../api"
 import PsModal from "../components/PsModal";
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Header from "../components/Header";
+import { Container } from "@mui/system";
+import { Grid } from "@mui/material";
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -59,19 +63,27 @@ const Profile = () => {
     
     return (
         <div>
-            {loading? <></> : !exist? <h1>User Not Found</h1> : 
-                <>
-                    <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={() => setSnackbarOpen(false)} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-                        <Alert severity={status} sx={{ width: '100%' }} onClose={() => setSnackbarOpen(false)}>
-                            {statusMsg}
-                        </Alert>
-                    </Snackbar>
-                    <Typography component="h1" variant="h4" color="textPrimary" >{username}'s Profile</Typography>
-                    <Button sx={{position: "absolute", top: "2%", right: "5%"}} size="large" onClick={() => {navigate("/")}}>Main Page</Button>
-                    {auth().name === username? <Button variant="outlined" onClick={() => setModalOpen(true)}>Change Password</Button> : <></>}
-                    <PsModal open={modalOpen} changePassword={changePassword} onClose={() => setModalOpen(false)}/>         
-                </>
-            }
+            <Header />
+            <Snackbar open={snackbarOpen} autoHideDuration={3000} onClose={() => setSnackbarOpen(false)} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+                <Alert severity={status} sx={{ width: '100%' }} onClose={() => setSnackbarOpen(false)}>
+                    {statusMsg}
+                </Alert>
+            </Snackbar>
+            <Container component="main" maxWidth="xl" sx={{marginTop: 6}}>
+                {loading? <></> : !exist? <Typography component="h1" variant="h3" color="textPrimary">User Not Found</Typography> : 
+                    <Box> 
+                        <Grid container sx={{borderBottom: 1, borderColor: "divider", alignItems: "center"}} spacing={8}>
+                            <Grid item>
+                                <Typography component="h1" variant="h3" color="textPrimary">{username}'s Profile</Typography>
+                            </Grid>
+                            <Grid item>
+                                {auth().name === username? <Button variant="outlined" onClick={() => setModalOpen(true)}>Change Password</Button> : <></>}
+                            </Grid>
+                        </Grid>
+                        <PsModal open={modalOpen} changePassword={changePassword} onClose={() => setModalOpen(false)}/>         
+                    </Box>
+                }
+            </Container>
         </div>
     )
 }

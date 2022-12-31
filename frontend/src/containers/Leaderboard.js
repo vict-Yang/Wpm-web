@@ -5,10 +5,17 @@ import Container from '@mui/material/Container';
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { useNavigate } from "react-router-dom"
-import Button from '@mui/material/Button';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
+import Header from "../components/Header";
+
+const style = {
+    margin: "1px", 
+    "&:hover": {background: "#292929"}, 
+    cursor:"pointer", 
+    alignItems: "center",
+}
 
 const TabPanel = ({children, value, index}) => {
     const navigate = useNavigate();
@@ -19,8 +26,25 @@ const TabPanel = ({children, value, index}) => {
       >
         {value === index && (
           <Box sx={{ p: 3 }}>
+            <Grid container spacing={1} sx={{marginLeft: "1px", marginRight: "1px", borderBottom: "1", borderColor:"divider"}}>
+                <Grid item xs={1}>
+                    <Typography component="h1" variant="h5" color="textSecondary">
+                        Rank
+                    </Typography>
+                </Grid>
+                <Grid item xs={10}>
+                    <Typography component="h1" variant="h5" color="textSecondary">
+                        Username
+                    </Typography>
+                </Grid>
+                <Grid item xs={1}>
+                    <Typography component="h1" variant="h5" color="textSecondary" align="center">
+                        WPM
+                    </Typography>
+                </Grid>
+            </Grid>
             {children.length > 0 && children.map((user) => (
-                <Grid container key={user.ranking} spacing={1} sx={{margin: "1px", "&:hover": {background: "#292929"}, cursor:"pointer"}} onClick={() => navigate(`/profile/${user.username}`)}>
+                <Grid container key={user.ranking} spacing={1} sx={style} onClick={() => navigate(`/profile/${user.username}`)}>
                     <Grid item xs={1}>
                         <Typography component="h1" variant="h4" color="textPrimary">
                             {user.ranking}
@@ -69,9 +93,9 @@ const Leaderboard = () => {
 
     return (
         <>
-            <Button sx={{position: "absolute", top: "2%", right: "5%"}} size="large" onClick={() => {navigate("/")}}>Main Page</Button>
-            <Container component="main" maxWidth="lg" sx={{pt: 10, background:"", height:"90vh"}}>
-                <Box sx={{borderBottom: 2, borderColor: 'divider', background: "", minHeight: "75%"}}>
+            <Header />
+            <Container component="main" maxWidth="lg" sx={{pt: 5, background:"", height:"90vh"}}>
+                <Box sx={{borderBottom: 2, borderColor: 'divider', background: "", minHeight: "81%"}}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                         <Tabs value={tabValue} onChange={handleTabChange} variant="fullWidth">
                             <Tab label={<span style={{fontSize: "1.5em"}}>1-10</span>} disabled={!(topUsers.length > 0)}/>
@@ -87,7 +111,7 @@ const Leaderboard = () => {
                     <TabPanel value={tabValue} index={3} children={topUsers.slice(Math.min(30, topUsers.length), Math.min(40, topUsers.length))} />
                     <TabPanel value={tabValue} index={4} children={topUsers.slice(Math.min(40, topUsers.length), Math.min(50, topUsers.length))} />
                 </Box>
-                <Grid container spacing={1} sx={{marginTop: 5, "&:hover": {background: "#292929"}, cursor:"pointer"}} onClick={() => navigate(`/profile/${self.username}`)}>
+                <Grid container spacing={1} sx={{marginTop: 3, "&:hover": {background: "#292929"}, cursor:"pointer"}} onClick={() => navigate(`/profile/${self.username}`)}>
                 <Grid item xs={1}>
                         <Typography component="h1" variant="h4" color="textPrimary">
                             {self.ranking}
@@ -104,13 +128,6 @@ const Leaderboard = () => {
                         </Typography>
                     </Grid>
                 </Grid>
-                {/* <Box sx={{paddingTop: 20}}>
-                    {loading? <h1>Hi</h1> : topUsers !== []? topUsers.map((user) => 
-                        <Typography component="h1" variant="h4" color="textPrimary" key={user.ranking}>
-                            {user.ranking} {user.username} {user.bestWPM}
-                        </Typography>
-                    ) : <></>}
-                </Box> */}
             </Container>
         </>
     )
