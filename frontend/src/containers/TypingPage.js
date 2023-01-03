@@ -76,18 +76,18 @@ const TypingPage = () => {
 
   const cursorRef = useCallback(
     (cursor) => {
-      console.log("ref", cursor);
+      //console.log("ref", cursor);
       if (cursor !== null) {
         setCursorPos((preCursorPos) => {
           let nextCursorPos = JSON.parse(
             JSON.stringify(cursor.getBoundingClientRect())
           );
-          console.log("cursorLineIdx in useCallback", cursorLineIdx);
+          //console.log("cursorLineIdx in useCallback", cursorLineIdx);
           if (
             cursorLineIdx !== 0 &&
             !(cursorLineIdx === 1 && nextCursorPos.top < preCursorPos.top)
           ) {
-            console.log("not at first line");
+            //console.log("not at first line");
             nextCursorPos.top = preCursorPos.top;
           }
           return nextCursorPos;
@@ -100,17 +100,19 @@ const TypingPage = () => {
   const getArticle = async () => {
     const response = await axios.get("/article");
     setTargetText(response.data.string)
+    console.log(response.data.string)
   }
   const saveRecord = async () => {
     await axios.post("/record", {username: auth().name, WPM: parseFloat(wpmPerSecond[wpmPerSecond.length - 1].wpm)});
-    console.log(wpmPerSecond)
   }
   useEffect(() => {
     getArticle()
   }, [])
+  /*
   useEffect(() => {
     console.log("ref", cursorRef.current);
   }, [cursorRef.current]);
+  */
   useKeyPress((key) => {
     if (key != "Backspace") {
       setCharTyped((prevCharsTyped) => [...prevCharsTyped, key]);
@@ -142,7 +144,7 @@ const TypingPage = () => {
         },
       ]);
     }
-    console.log("cursorLineIdx = ", cursorLineIdx);
+    //console.log("cursorLineIdx = ", cursorLineIdx);
   }, [countDown]);
   return (
     <>

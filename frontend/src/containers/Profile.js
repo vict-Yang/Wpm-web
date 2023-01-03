@@ -11,6 +11,7 @@ import Box from '@mui/material/Box';
 import Header from "../components/Header";
 import { Container } from "@mui/system";
 import { Grid } from "@mui/material";
+import { RecentWPM } from "../components/RecentWPM"
 
 const Profile = () => {
     const navigate = useNavigate();
@@ -22,13 +23,15 @@ const Profile = () => {
     const [statusMsg, setStatusMsg] = useState("");
     const [status, setStatus] = useState("success");
     const [loading, setLoading] = useState(true);
+    const [profileUser, setProfileUser] = useState(undefined);
     const { username } = useParams();
 
     const getUser = async (username) => {
-        const {data:{message}} = await axios.get("/user", {params: {username}});
+        const {data:{message, user}} = await axios.get("/user", {params: {username}});
         if(message === "Found") {
             setExist(true)
         }
+        setProfileUser(user)
         setLoading(false);
     }
 
@@ -60,7 +63,7 @@ const Profile = () => {
         actions.resetForm();
         actions.setSubmitting(false);
     }
-    
+
     return (
         <div>
             <Header />
@@ -83,6 +86,13 @@ const Profile = () => {
                         <PsModal open={modalOpen} changePassword={changePassword} onClose={() => setModalOpen(false)}/>         
                     </Box>
                 }
+            </Container>
+            <Container component="main" maxWidth="xl" sx={{marginTop: 6}}>
+            {loading? <></> : <RecentWPM
+            xDataKey={"second"}
+            dataKey={"wpm"}
+            data={profileUser.recentWPM}
+            />}
             </Container>
         </div>
     )

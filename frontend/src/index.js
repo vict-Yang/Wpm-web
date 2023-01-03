@@ -14,7 +14,6 @@ const darkTheme = createTheme({
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-    <React.StrictMode>
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <AuthProvider 
@@ -26,7 +25,6 @@ root.render(
                 <App />
             </AuthProvider>
         </ThemeProvider>
-    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

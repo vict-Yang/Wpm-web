@@ -17,6 +17,7 @@ const TypingText = ({ charsTyped, targetText, cursorLineIdx , cursorRef}) => {
             unmountOnExit
             mountOnEnter
             timeout={{ enter: 250, exit: 250 }}
+            key = {lIdx}
           >
             <Fade
               in={isVisible(lIdx, cursorLineIdx)}
