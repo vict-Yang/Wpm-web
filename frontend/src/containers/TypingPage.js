@@ -72,7 +72,8 @@ const TypingPage = () => {
   const [wpmPerSecond, setWpmPerSecond] = useState([]);
   const [cursorLineIdx, setLineIdx] = useState(0);
   const [cursorPos, setCursorPos] = useState({});
-  const [targetText, setTargetText] = useState("")
+  const [targetText, setTargetText] = useState("");
+  const containerRef = useRef(null);
 
   const cursorRef = useCallback(
     (cursor) => {
@@ -82,6 +83,12 @@ const TypingPage = () => {
           let nextCursorPos = JSON.parse(
             JSON.stringify(cursor.getBoundingClientRect())
           );
+          nextCursorPos.left =
+            cursor.getBoundingClientRect().left -
+            containerRef.current.getBoundingClientRect().left;
+          nextCursorPos.top =
+            cursor.getBoundingClientRect().top -
+            containerRef.current.getBoundingClientRect().top;
           //console.log("cursorLineIdx in useCallback", cursorLineIdx);
           if (
             cursorLineIdx !== 0 &&
@@ -99,14 +106,17 @@ const TypingPage = () => {
   const auth = useAuthUser();
   const getArticle = async () => {
     const response = await axios.get("/article");
-    setTargetText(response.data.string)
-  }
+    setTargetText(response.data.string);
+  };
   const saveRecord = async () => {
-    await axios.post("/record", {username: auth().name, WPM: parseFloat(wpmPerSecond[wpmPerSecond.length - 1].wpm)});
-  }
+    await axios.post("/record", {
+      username: auth().name,
+      WPM: parseFloat(wpmPerSecond[wpmPerSecond.length - 1].wpm),
+    });
+  };
   useEffect(() => {
-    getArticle()
-  }, [])
+    getArticle();
+  }, []);
   /*
   useEffect(() => {
     console.log("ref", cursorRef.current);
@@ -188,29 +198,39 @@ const TypingPage = () => {
             </IconButton>
           </Tooltip>
           <Tooltip title="new article">
-          <IconButton variant="outlined" sx={{ mt: "-15px" }}
-              onClick={()=>{
+            <IconButton
+              variant="outlined"
+              sx={{ mt: "-15px" }}
+              onClick={() => {
                 setCharTyped([]);
                 setCountDown(MaxTime);
                 setLineIdx(0);
                 setStart(false);
                 setWpmPerSecond([]);
-                getArticle()
-              }}>
+                getArticle();
+              }}
+            >
               <TextSnippet />
             </IconButton>
           </Tooltip>
           <Tooltip title="save">
-          <IconButton variant="outlined" sx={{ mt: "-15px" }} onClick={saveRecord}>
+            <IconButton
+              variant="outlined"
+              sx={{ mt: "-15px" }}
+              onClick={saveRecord}
+            >
               <Save />
             </IconButton>
           </Tooltip>
         </Box>
       </Modal>
       <Container
-    sx={{
-      mt: "75px"
-    }}>
+        ref={containerRef}
+        sx={{
+          mt: "75px",
+          position: "relative",
+        }}
+      >
         <Cursor cursorPos={cursorPos} charId={charsTyped.length} />
         <Timer time={MaxTime - countDown} MaxTime={MaxTime} />
         <TypingText
