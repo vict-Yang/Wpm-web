@@ -8,8 +8,12 @@ import {
     Tooltip,
     Legend
   } from "recharts";
-  // suppose the data is [{second: 1, wpm: 10}, {second: 2: wpm: 20}]
-  // dataKey is wpm, xDataKey is second
+
+  const wrapperStyle = {
+    color: "blue",
+    backgroundColor: "blue"
+  };
+
   const RecentWPM = ({ recentWPM }) => {
     let data = []
     for(let record of recentWPM){
@@ -26,16 +30,15 @@ import {
       })
     }
     return (
-      <LineChart width={1400} height={400} data={data}>
+      <LineChart width={1400} height={500} data={data}>
         <CartesianGrid stroke="#ccc" />
         <XAxis dataKey={"date"}>
-          <Label value="time" offset={-5} position="insideBottomRight" />
+          <Label value="time" offset={-5} position="insideBottom" />
         </XAxis>
         <YAxis>
           <Label value="WPM" offset={5} angle={-90} position="insideLeft" />
         </YAxis>
-        <Tooltip />
-        <Legend/>
+        <Tooltip wrapperStyle={wrapperStyle}/>
         <Line type="monotone" dataKey={"WPM"} stroke="#8884d8" strokeWidth={3}/>
       </LineChart>
     );
