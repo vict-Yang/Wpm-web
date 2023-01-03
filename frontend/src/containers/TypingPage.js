@@ -182,7 +182,10 @@ const TypingPage = ({ targetText }) => {
           </Tooltip>
         </Box>
       </Modal>
-      <Container>
+      <Container
+    sx={{
+      mt: "75px"
+    }}>
         <Cursor cursorPos={cursorPos} charId={charsTyped.length} />
         <Timer time={MaxTime - countDown} MaxTime={MaxTime} />
         <TypingText

@@ -16,12 +16,13 @@ const blinkAnimation = keyframes`
 const Cursor = ({ cursorPos, charId }) => {
   const cursorStyle = {
     left: cursorPos.left,
-    width: "2.4px",
+    width: "3px",
     height: cursorPos.height,
     top: cursorPos.top,
-    backgroundColor: "black",
+    backgroundColor: "white",
     position: "absolute",
     transition: "left 0.1s",
+    borderRadius: "6px",
   };
   if(charId === 0) {
     cursorStyle.animation =  `${blinkAnimation} 1s infinite ease`
