@@ -1,13 +1,11 @@
 import { Router } from "express"
 import Word from "../models/Word";
-import articleRouter from "./article"
-import recordRouter from "./record"
 
 const router = Router();
 
 router.get('/', async (req, res) => {
     const randomWords = await Word.aggregate(
-        [ { $sample: { size: 600 } } ]
+        [ { $sample: { size: 200 } } ]
     )
     var article = ""
     for(let word of randomWords){

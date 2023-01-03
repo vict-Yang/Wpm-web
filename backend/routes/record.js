@@ -14,10 +14,14 @@ router.post('/', async (req, res) => {
     await User.updateOne({name: username},
     {
         $push: {
-            recentWPM: WPM
+            recentWPM: {
+                WPM: WPM,
+                time: new Date()
+            }
         }
     })
     const user = await User.findOne({name: username})
+    console.log(user.recentWPM)
 })
 
 export default router

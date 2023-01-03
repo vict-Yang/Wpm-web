@@ -9,7 +9,10 @@ router.get('/', async (req, res) => {
     if(!user)
         res.json({message: "Not Found"});
     else
-        res.json({message: "Found"});
+        res.json({
+            message: "Found",
+            user: user
+        });
 })
 
 export default router

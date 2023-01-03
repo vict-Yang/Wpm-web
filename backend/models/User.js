@@ -1,6 +1,17 @@
 import mongoose from 'mongoose';
 
 const Schema = mongoose.Schema
+
+const RecentWPM = new Schema({
+    WPM: {
+        type: Number
+    },
+    time : {
+        type: Date,
+        default: Date.now
+    }
+})
+
 const UserSchema = new Schema({
     name: {
         type: String,
@@ -14,7 +25,7 @@ const UserSchema = new Schema({
         type: Number,
         default: 0,
     },
-    recentWPM: [{type: Number}],
+    recentWPM: [{type: RecentWPM}],
 })
 
 const User = mongoose.model('user', UserSchema)
