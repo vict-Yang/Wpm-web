@@ -23,7 +23,7 @@ const Profile = () => {
     const [statusMsg, setStatusMsg] = useState("");
     const [status, setStatus] = useState("success");
     const [loading, setLoading] = useState(true);
-    const [profileUser, setProfileUser] = useState(undefined);
+    const [recentWPM, setRecentWPM] = useState([]);
     const { username } = useParams();
 
     const getUser = async (username) => {
@@ -31,7 +31,7 @@ const Profile = () => {
         if(message === "Found") {
             setExist(true)
         }
-        setProfileUser(user)
+        setRecentWPM(user.recentWPM)
         setLoading(false);
     }
 
@@ -88,10 +88,10 @@ const Profile = () => {
                 }
             </Container>
             <Container component="main" maxWidth="xl" sx={{marginTop: 6}}>
-            {loading? <></> : <RecentWPM
+            {(loading)? <></> : <RecentWPM
             xDataKey={"second"}
             dataKey={"wpm"}
-            data={profileUser.recentWPM}
+            recentWPM={recentWPM}
             />}
             </Container>
         </div>

@@ -100,7 +100,6 @@ const TypingPage = () => {
   const getArticle = async () => {
     const response = await axios.get("/article");
     setTargetText(response.data.string)
-    console.log(response.data.string)
   }
   const saveRecord = async () => {
     await axios.post("/record", {username: auth().name, WPM: parseFloat(wpmPerSecond[wpmPerSecond.length - 1].wpm)});
