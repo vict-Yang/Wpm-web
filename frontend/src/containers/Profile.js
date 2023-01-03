@@ -72,10 +72,10 @@ const Profile = () => {
                     {statusMsg}
                 </Alert>
             </Snackbar>
-            <Container component="main" maxWidth="xl" sx={{marginTop: 6}}>
+            <Container component="main" maxWidth="xl" sx={{ marginTop: 6 }}>
                 {loading? <></> : !exist? <Typography component="h1" variant="h3" color="textPrimary">User Not Found</Typography> : 
                     <Box> 
-                        <Grid container sx={{borderBottom: 1, borderColor: "divider", alignItems: "center"}} spacing={8}>
+                        <Grid container sx={{marginLeft: 2, borderBottom: 1, borderColor: "divider", alignItems: "center", justifyContent: 'space-around'}}>
                             <Grid item>
                                 <Typography component="h1" variant="h3" color="textPrimary">{username}'s Profile</Typography>
                             </Grid>
@@ -87,7 +87,11 @@ const Profile = () => {
                     </Box>
                 }
             </Container>
-            <Container component="main" maxWidth="xl" sx={{marginTop: 6}}>
+            <Container component="main" maxWidth="xl" sx={{
+                marginTop: 6,
+                display: 'flex',
+                justifyContent: 'center',
+            }}>
             {(loading)? <></> : <RecentWPM
             xDataKey={"second"}
             dataKey={"wpm"}

@@ -5,19 +5,22 @@ const router = Router();
 
 router.post('/', async (req, res) => {
     const { username, WPM } = req.body;
-    await User.updateOne({name: username, bestWPM: {$lt: WPM}},
-    {
+    await User.updateOne({name: username, bestWPM: {$lt: WPM}},{
         $set: {
             bestWPM: WPM
         }
     })
-    await User.updateOne({name: username},
-    {
+    await User.updateOne({name: username},{
         $push: {
             recentWPM: {
                 WPM: WPM,
                 time: new Date()
             }
+        }
+    })
+    await User.updateOne({name: username, recentWPM: {$size: 11}},{
+        $pop: {
+            recentWPM: -1
         }
     })
     const user = await User.findOne({name: username})

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Container, Modal, Box, IconButton, Tooltip } from "@mui/material";
+import { Container, Modal, Box, IconButton, Tooltip, Snackbar, Alert } from "@mui/material";
 import { Replay, TextSnippet, Save } from "@mui/icons-material";
 import { useKeyPress } from "./hooks/useKeyPress";
 import { useCountDown } from "./hooks/useCountDown";
@@ -73,6 +73,7 @@ const TypingPage = () => {
   const [cursorLineIdx, setLineIdx] = useState(0);
   const [cursorPos, setCursorPos] = useState({});
   const [targetText, setTargetText] = useState("");
+  const [open, setOpen] = useState(false);
   const containerRef = useRef(null);
 
   const cursorRef = useCallback(
@@ -157,6 +158,11 @@ const TypingPage = () => {
   }, [countDown]);
   return (
     <>
+      <Snackbar open={open} autoHideDuration={3000} onClose={() => setOpen(false)} anchorOrigin={{ vertical: "top", horizontal: "center" }}>
+          <Alert severity="success" sx={{ width: '100%' }} onClose={() => setOpen(false)}>
+              Saved
+          </Alert>
+      </Snackbar>
       <Modal
         open={countDown === 0}
         sx={{
@@ -217,7 +223,10 @@ const TypingPage = () => {
             <IconButton
               variant="outlined"
               sx={{ mt: "-15px" }}
-              onClick={saveRecord}
+              onClick={()=>{
+                saveRecord()
+                setOpen(true)
+              }}
             >
               <Save />
             </IconButton>
