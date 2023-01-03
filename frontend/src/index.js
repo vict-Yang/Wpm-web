@@ -2,7 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./containers/App";
 import reportWebVitals from "./reportWebVitals";
-import "antd/dist/antd.css";
 import { AuthProvider } from "react-auth-kit";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
