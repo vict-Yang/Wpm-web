@@ -12,12 +12,12 @@ import { Box, Typography } from "@mui/material";
 // suppose the data is [{second: 1, wpm: 10}, {second: 2: wpm: 20}]
 // dataKey is wpm, xDataKey is second
 const CustomTooltip = ({ active, payload, label }) => {
-  console.log("payload", payload);
   if (active && payload && payload.length) {
     return (
       <Box
         sx={{
           background: "rgba(57, 62, 70, 0.5)",
+          borderRadius: "6px"
         }}
       >
         <Typography variant="h4"> {label} </Typography>
