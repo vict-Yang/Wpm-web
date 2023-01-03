@@ -1,11 +1,15 @@
 import mongoose from 'mongoose';
 import dotenv from 'dotenv-defaults';
+import Word from "./models/Word"
 import User from "./models/User"
 import userData from "./users.json"
+import wordData from "./words.json"
 
 const dataInit = async () => {
     await User.deleteMany({})
     await User.insertMany(userData)
+    await Word.deleteMany({})
+    await Word.insertMany(wordData)
 }
 
 export default {

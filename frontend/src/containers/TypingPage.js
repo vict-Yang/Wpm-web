@@ -7,6 +7,8 @@ import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
 import { Cursor } from "../components/Cursor";
+import { useAuthUser } from "react-auth-kit";
+import axios from "../api";
 const MaxTime = 10;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 55;
@@ -63,13 +65,15 @@ const getNewLineIdx = (targetText, idx) => {
   }
   return ret;
 };
-const TypingPage = ({ targetText }) => {
+const TypingPage = () => {
   const [charsTyped, setCharTyped] = useState([]);
   const { countDown, startCountDown, setCountDown, setStart } =
     useCountDown(MaxTime);
   const [wpmPerSecond, setWpmPerSecond] = useState([]);
   const [cursorLineIdx, setLineIdx] = useState(0);
   const [cursorPos, setCursorPos] = useState({});
+  const [targetText, setTargetText] = useState("")
+
   const cursorRef = useCallback(
     (cursor) => {
       console.log("ref", cursor);
@@ -92,6 +96,18 @@ const TypingPage = ({ targetText }) => {
     },
     [cursorLineIdx]
   );
+  const auth = useAuthUser();
+  const getArticle = async () => {
+    const response = await axios.get("/article");
+    setTargetText(response.data.string)
+  }
+  const saveRecord = async () => {
+    await axios.post("/record", {username: auth().name, WPM: parseFloat(wpmPerSecond[wpmPerSecond.length - 1].wpm)});
+    console.log(wpmPerSecond)
+  }
+  useEffect(() => {
+    getArticle()
+  }, [])
   useEffect(() => {
     console.log("ref", cursorRef.current);
   }, [cursorRef.current]);
@@ -171,12 +187,20 @@ const TypingPage = ({ targetText }) => {
             </IconButton>
           </Tooltip>
           <Tooltip title="new article">
-            <IconButton variant="outlined" sx={{ mt: "-15px" }}>
+          <IconButton variant="outlined" sx={{ mt: "-15px" }}
+              onClick={()=>{
+                setCharTyped([]);
+                setCountDown(MaxTime);
+                setLineIdx(0);
+                setStart(false);
+                setWpmPerSecond([]);
+                getArticle()
+              }}>
               <TextSnippet />
             </IconButton>
           </Tooltip>
           <Tooltip title="save">
-            <IconButton variant="outlined" sx={{ mt: "-15px" }}>
+          <IconButton variant="outlined" sx={{ mt: "-15px" }} onClick={saveRecord}>
               <Save />
             </IconButton>
           </Tooltip>
