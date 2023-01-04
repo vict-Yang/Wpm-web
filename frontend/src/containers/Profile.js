@@ -14,7 +14,6 @@ import { Grid } from "@mui/material";
 import { RecentWPM } from "../components/RecentWPM"
 
 const Profile = () => {
-    const navigate = useNavigate();
     const authHeader = useAuthHeader();
     const auth = useAuthUser();
     const [modalOpen, setModalOpen] = useState(false);
@@ -30,8 +29,8 @@ const Profile = () => {
         const {data:{message, user}} = await axios.get("/user", {params: {username}});
         if(message === "Found") {
             setExist(true)
-        }
-        setRecentWPM(user.recentWPM)
+            setRecentWPM(user.recentWPM)
+        }  
         setLoading(false);
     }
 
@@ -73,7 +72,12 @@ const Profile = () => {
                 </Alert>
             </Snackbar>
             <Container component="main" maxWidth="xl" sx={{ marginTop: 6 }}>
-                {loading? <></> : !exist? <Typography component="h1" variant="h3" color="textPrimary">User Not Found</Typography> : 
+                {loading? <></> : !exist? 
+                    <Box sx={{marginTop: 20}}>
+                        <Typography component="h1" variant="h1" color="textPrimary" align="center">404</Typography> 
+                        <Typography component="h1" variant="h2" color="textPrimary" align="center">User Not Found</Typography> 
+                    </Box>
+                    : 
                     <Box> 
                         <Grid container sx={{marginLeft: 2, borderBottom: 1, borderColor: "divider", alignItems: "center", justifyContent: 'space-around'}}>
                             <Grid item>
@@ -83,21 +87,28 @@ const Profile = () => {
                                 {auth().name === username? <Button variant="outlined" onClick={() => setModalOpen(true)}>Change Password</Button> : <></>}
                             </Grid>
                         </Grid>
+                        <Box sx={{marginTop: 6, display: 'flex', justifyContent: 'center'}}>
+                            <RecentWPM
+                                xDataKey={"second"}
+                                dataKey={"wpm"}
+                                recentWPM={recentWPM}
+                            />
+                        </Box>
                         <PsModal open={modalOpen} changePassword={changePassword} onClose={() => setModalOpen(false)}/>         
                     </Box>
                 }
             </Container>
-            <Container component="main" maxWidth="xl" sx={{
+            {/* <Container component="main" maxWidth="xl" sx={{
                 marginTop: 6,
                 display: 'flex',
                 justifyContent: 'center',
             }}>
-            {(loading)? <></> : <RecentWPM
-            xDataKey={"second"}
-            dataKey={"wpm"}
-            recentWPM={recentWPM}
-            />}
-            </Container>
+                {(loading)? <></> : <RecentWPM
+                xDataKey={"second"}
+                dataKey={"wpm"}
+                recentWPM={recentWPM}
+                />}
+            </Container> */}
         </div>
     )
 }

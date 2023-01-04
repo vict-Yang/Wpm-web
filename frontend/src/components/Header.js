@@ -35,7 +35,7 @@ const Header = () => {
                 <Button size="large" onClick={() => {navigate("/leaderboard")}}>Leaderboard</Button>
             </Grid>
             <Grid item>
-                <Button size="large" onClick={() => {navigate(`/profile/${username}`)}}>Profile</Button>
+                <Button size="large" onClick={() => {navigate(`/profile/${username}`); window.location.reload()}}>Profile</Button>
             </Grid>
         </Grid>
     )

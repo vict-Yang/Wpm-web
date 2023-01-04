@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Container, Modal, Box, IconButton, Tooltip, Snackbar, Alert } from "@mui/material";
+import { Container, Modal, Box, IconButton, Tooltip, Snackbar, Alert, CircularProgress } from "@mui/material";
 import { Replay, TextSnippet, Save } from "@mui/icons-material";
 import { useKeyPress } from "./hooks/useKeyPress";
 import { useCountDown } from "./hooks/useCountDown";
@@ -74,6 +74,7 @@ const TypingPage = () => {
   const [cursorPos, setCursorPos] = useState({});
   const [targetText, setTargetText] = useState("");
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const containerRef = useRef(null);
 
   const cursorRef = useCallback(
@@ -106,8 +107,10 @@ const TypingPage = () => {
   );
   const auth = useAuthUser();
   const getArticle = async () => {
+    setLoading(true);
     const response = await axios.get("/article");
     setTargetText(response.data.string);
+    setLoading(false);
   };
   const saveRecord = async () => {
     await axios.post("/record", {
@@ -248,6 +251,20 @@ const TypingPage = () => {
           cursorLineIdx={cursorLineIdx}
           cursorRef={cursorRef}
         />
+        <Modal 
+          open={loading} 
+          sx={{
+            backdropFilter: "blur(2px)",
+          }}
+        >
+          <CircularProgress 
+            sx={{position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)"
+            }} 
+            size="100px" />
+        </Modal>
       </Container>
     </>
   );
