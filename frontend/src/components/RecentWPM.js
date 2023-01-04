@@ -9,9 +9,9 @@ import {
     Legend
 } from "recharts";
 import { Box, Typography } from "@mui/material";
+const moment = require("moment-timezone");
   
 const CustomTooltip = ({ active, payload, label }) => {
-  console.log("payload", payload);
   if (active && payload && payload.length) {
     return (
       <Box
@@ -40,10 +40,10 @@ const CustomTooltip = ({ active, payload, label }) => {
 const RecentWPM = ({ recentWPM }) => {
   let data = []
   for(let record of recentWPM){
-    const [date, time] = record.time.split("T")
+    const [date, time] = moment(record.time).local().format().split("T")
     data.push({
       date: date,
-      time: time.split(".")[0],
+      time: time.split(".")[0].split(/[+-]/)[0],
       WPM: record.WPM
     })
   }
@@ -53,13 +53,13 @@ const RecentWPM = ({ recentWPM }) => {
     })
   }
   return (
-    <LineChart width={900} height={450} data={data}>
+    <LineChart width={1000} height={450} data={data} margin={{right: 60, bottom: 30}}>
       <CartesianGrid stroke="#ccc" />
       <XAxis dataKey={"date"}>
-        <Label value="time" offset={-5} position="insideBottom" />
+        <Label value="time" offset={-20} position="insideBottom" />
       </XAxis>
       <YAxis>
-        <Label value="WPM" offset={5} angle={-90} position="insideLeft" />
+        <Label value="WPM" offset={10} angle={-90} position="insideLeft" />
       </YAxis>
       <Tooltip content={<CustomTooltip />} />
       <Line type="monotone" dataKey={"WPM"} stroke="#8884d8" strokeWidth={3}/>

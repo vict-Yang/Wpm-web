@@ -20,7 +20,8 @@
     "styled-components": "^5.3.6",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11",
-    "recharts": "^2.2.0"
+    "recharts": "^2.2.0",
+    "moment-timezone": "^0.5.40"
   },
   "scripts": {
     "start": "react-scripts start",
