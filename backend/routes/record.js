@@ -25,6 +25,7 @@ router.post('/', async (req, res) => {
     })
     const user = await User.findOne({name: username})
     console.log(user.recentWPM)
+    res.json({message: "Saved"})
 })
 
 export default router

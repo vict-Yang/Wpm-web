@@ -76,6 +76,7 @@ const TypingPage = () => {
   const [targetText, setTargetText] = useState("");
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [saved, setSaved] = useState(false)
   const containerRef = useRef(null);
 
   const cursorRef = useCallback(
@@ -109,15 +110,20 @@ const TypingPage = () => {
   const auth = useAuthUser();
   const getArticle = async () => {
     setLoading(true);
+    setSaved(false)
     const response = await axios.get("/article");
     setTargetText(response.data.string);
     setLoading(false);
   };
   const saveRecord = async () => {
+    setLoading(true);
     await axios.post("/record", {
       username: auth().name,
       WPM: parseFloat(wpmPerSecond[wpmPerSecond.length - 1].wpm),
     });
+    setLoading(false);
+    setOpen(true);
+    setSaved(true);
   };
   useEffect(() => {
     getArticle();
@@ -202,6 +208,7 @@ const TypingPage = () => {
                 setLineIdx(0);
                 setStart(false);
                 setWpmPerSecond([]);
+                setSaved(false);
               }}
             >
               <Replay />
@@ -229,8 +236,8 @@ const TypingPage = () => {
               sx={{ mt: "-15px" }}
               onClick={()=>{
                 saveRecord()
-                setOpen(true)
               }}
+              disabled={saved}
             >
               <Save />
             </IconButton>
