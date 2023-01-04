@@ -10,6 +10,7 @@ const LoadingModal = ({open}) => {
             justifyContent: 'center',
             alignItems: 'center'
           }}
+          disableAutoFocus={true}
         >
           <CircularProgress size="100px" />
     </Modal>)

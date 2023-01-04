@@ -27,6 +27,7 @@ const Profile = () => {
     const { username } = useParams();
 
     const getUser = async (username) => {
+        setLoading(true);
         const {data:{message, user}} = await axios.get("/user", {params: {username}});
         if(message === "Found") {
             setExist(true)
@@ -37,7 +38,7 @@ const Profile = () => {
 
     useEffect(() => {
         getUser(username);
-    }, [])
+    }, [username])
 
     const changePassword = async (values, actions) => {
         if(values.newPassword !== values.confirmPassword)
