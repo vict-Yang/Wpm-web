@@ -9,6 +9,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Grid from '@mui/material/Grid';
 import Header from "../components/Header";
+import LoadingModal from "../components/LoadingModal";
 
 const style = {
     margin: "1px", 
@@ -77,6 +78,7 @@ const Leaderboard = () => {
     const [tabValue, setTabValue] = useState(0);
 
     const getUsers = async () => {
+        setLoading(true);
         const response = await axios.get("/leaderboard", {params: {name: auth().name}});
         setTopUsers(response.data.topUsers);
         setSelf(response.data.self);
@@ -129,6 +131,7 @@ const Leaderboard = () => {
                     </Grid>
                 </Grid>
             </Container>
+            <LoadingModal open={loading} />
         </>
     )
 }

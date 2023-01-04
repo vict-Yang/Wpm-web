@@ -1,11 +1,12 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Container, Modal, Box, IconButton, Tooltip, Snackbar, Alert, CircularProgress } from "@mui/material";
+import { Container, Modal, Box, IconButton, Tooltip, Snackbar, Alert } from "@mui/material";
 import { Replay, TextSnippet, Save } from "@mui/icons-material";
 import { useKeyPress } from "./hooks/useKeyPress";
 import { useCountDown } from "./hooks/useCountDown";
 import { TypingText } from "../components/TypingText";
 import { Timer } from "../components/Timer";
 import { WpmLineChart } from "../components/WpmLineChart";
+import LoadingModal from "../components/LoadingModal";
 import { Cursor } from "../components/Cursor";
 import { useAuthUser } from "react-auth-kit";
 import axios from "../api";
@@ -251,20 +252,7 @@ const TypingPage = () => {
           cursorLineIdx={cursorLineIdx}
           cursorRef={cursorRef}
         />
-        <Modal 
-          open={loading} 
-          sx={{
-            backdropFilter: "blur(2px)",
-          }}
-        >
-          <CircularProgress 
-            sx={{position: "absolute",
-              top: "50%",
-              left: "50%",
-              transform: "translate(-50%, -50%)"
-            }} 
-            size="100px" />
-        </Modal>
+        <LoadingModal open={loading} />
       </Container>
     </>
   );

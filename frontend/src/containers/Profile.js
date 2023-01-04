@@ -12,6 +12,7 @@ import Header from "../components/Header";
 import { Container } from "@mui/system";
 import { Grid } from "@mui/material";
 import { RecentWPM } from "../components/RecentWPM"
+import LoadingModal from "../components/LoadingModal";
 
 const Profile = () => {
     const authHeader = useAuthHeader();
@@ -97,18 +98,8 @@ const Profile = () => {
                         <PsModal open={modalOpen} changePassword={changePassword} onClose={() => setModalOpen(false)}/>         
                     </Box>
                 }
+                <LoadingModal open={loading} />
             </Container>
-            {/* <Container component="main" maxWidth="xl" sx={{
-                marginTop: 6,
-                display: 'flex',
-                justifyContent: 'center',
-            }}>
-                {(loading)? <></> : <RecentWPM
-                xDataKey={"second"}
-                dataKey={"wpm"}
-                recentWPM={recentWPM}
-                />}
-            </Container> */}
         </div>
     )
 }

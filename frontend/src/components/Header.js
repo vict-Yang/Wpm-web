@@ -2,13 +2,14 @@ import { useSignOut, useAuthUser } from 'react-auth-kit'
 import { useNavigate } from "react-router-dom"
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
-import SvgIcon from '@mui/material/SvgIcon';
+import { Home } from "@mui/icons-material";
+import IconButton from '@mui/material/IconButton';
 
 function HomeIcon(props) {
     return (
-        <SvgIcon {...props}>
-            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
-        </SvgIcon>
+        <IconButton {...props}>
+            <Home fontSize="large"/>
+        </IconButton>
     );
 }
 
@@ -26,7 +27,7 @@ const Header = () => {
     return (
         <Grid container sx={{pt: 3}} spacing={2}>
             <Grid item xs={9}>
-                <HomeIcon onClick={() => {navigate("/")}} sx={{ml: 12, cursor: "pointer"}} fontSize="large"/>
+                <HomeIcon onClick={() => {navigate("/")}} sx={{ml: 12, cursor: "pointer"}}/>
             </Grid>
             <Grid item>
                 <Button size="large" onClick={mySignOut} color="secondary">Sign Out</Button>
