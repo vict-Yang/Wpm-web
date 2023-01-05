@@ -46,7 +46,7 @@ const reformatTargetText = (targetText) => {
   while (idx < targetText.length && idx !== -1) {
     const nextSpace = targetText.indexOf(" ", idx + 1);
     if (nextSpace === -1) break;
-    if (linePos + (nextSpace - idx) - 1 >= MaxCharPerLine) {
+    if (linePos + (nextSpace - idx)  >= MaxCharPerLine) {
       // console.log("replace");
       ret[idx] = "\n";
       linePos = nextSpace - idx;
