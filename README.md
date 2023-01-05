@@ -8,6 +8,9 @@
 ### 楊心岑  
 ### 林庭宇  
 ### 嚴詩順  
-- 登入機制
-- 登入頁面、註冊頁面、排行榜、Profile架構
+- 登入機制：使用jsonwebtoken來驗證使用者，使用bcrypt來加密密碼，前端則是使用react-auth-kit來實現登入機制
+- 登入頁面、註冊頁面：設計參考了MUI官方的sample頁面，並使用Formik來簡化表格的實作（處理submit、驗證每個欄位的合理性等等）
+- 定義前端的Routes
+- 排行榜（前端 + 後端）
+- Profile頁面（不包括chart）：排版、實作改密碼機制等等
 - deploy
