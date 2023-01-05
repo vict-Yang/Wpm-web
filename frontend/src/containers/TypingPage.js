@@ -39,7 +39,7 @@ const calculateCorrectWord = (targetText, charsTyped) => {
 };
 const reformatTargetText = (targetText) => {
   let ret = JSON.parse(
-    JSON.stringify(targetText.replaceAll("\n", " ").split(""))
+    JSON.stringify(targetText.replaceAll(/[\n\s]/g, " ").split(""))
   );
   let idx = targetText.indexOf(" ");
   let linePos = idx;
