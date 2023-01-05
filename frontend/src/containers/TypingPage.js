@@ -10,7 +10,7 @@ import LoadingModal from "../components/LoadingModal";
 import { Cursor } from "../components/Cursor";
 import { useAuthUser } from "react-auth-kit";
 import axios from "../api";
-const MaxTime = 10;
+const MaxTime = 30;
 const SecondToMinute = 1 / 60;
 const MaxCharPerLine = 55;
 const calculateCorrectWord = (targetText, charsTyped) => {
